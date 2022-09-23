@@ -2,6 +2,7 @@
 using ProductivityMonitor.Models.Entity;
 using ProductivityMonitor.Models;
 using ProductivityMonitor.Models.Resource;
+using ProductivityMonitor.Models.Input;
 
 namespace ProductivityMonitor.MappingProfiles
 {
@@ -115,7 +116,17 @@ namespace ProductivityMonitor.MappingProfiles
            opt => opt.MapFrom(src => src.Sprn_enddate))
            .ReverseMap();
 
-            
+            //mapping for sprinttaskent and sprinttask input model
+            CreateMap<SprintTaskModel, SprintTaskEnt>()
+           .ForMember(dest =>
+           dest.Sprn_Id,
+           opt => opt.MapFrom(src => src.SprintId))
+           .ForMember(dest =>
+           dest.Task_Id,
+           opt => opt.MapFrom(src => src.TaskId))
+           .ForMember(dest =>
+           dest.User_Id,
+           opt => opt.MapFrom(src => src.UserId));
         }
     }
 }

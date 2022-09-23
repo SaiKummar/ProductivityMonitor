@@ -82,7 +82,11 @@ namespace ProductivityMonitor.Dao
         //create new sprint task
         public bool CreateSprintTask(SprintTaskModel sprintTaskData)
         {
-            
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            var newData = mapper.Map<SprintTaskEnt>(sprintTaskData);
+            string qry = "insert into sprinttasks values(@Sprn_Id,@Task_Id,@User_Id);";
+            int numOfRecordsAffected = connection.Execute(qry, newData);
+            return numOfRecordsAffected > 0;
         }
     }
 }
