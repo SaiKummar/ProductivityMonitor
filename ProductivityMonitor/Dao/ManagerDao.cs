@@ -88,5 +88,15 @@ namespace ProductivityMonitor.Dao
             int numOfRecordsAffected = connection.Execute(qry, newData);
             return numOfRecordsAffected > 0;
         }
+
+        public List<TaskEnt> GetAllTasksInProject(int projectId)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "select t.* from tasks t inner join projecttasks pt on t.task_id = pt.task_id " +
+                "inner join projectmodules pm on pt.task_modl_id = pm.modl_id where pm.modl_proj_id = @pid;";
+            var tasks = connection.Query<TaskEnt>(qry, new {pid = projectId});
+            //convert Ienumerable to list
+            return tasks.ToList();
+        }
     }
 }

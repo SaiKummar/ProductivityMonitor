@@ -7,6 +7,7 @@ namespace ProductivityMonitor.Repository
 {
     public class ManagerRepository : IManagerRepository
     {
+        //reference to store a dao object
         private IManagerDao dao;
 
         public ManagerRepository(IManagerDao dao)
@@ -50,6 +51,9 @@ namespace ProductivityMonitor.Repository
             return dao.GetAllTasks();
         }
 
-
+        public List<TaskEnt> GetAllTasksInProject(int projectId)
+        {
+            return dao.GetAllTasksInProject(projectId);
+        }
     }
 }

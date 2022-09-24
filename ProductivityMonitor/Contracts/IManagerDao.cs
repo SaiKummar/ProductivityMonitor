@@ -12,5 +12,6 @@ namespace ProductivityMonitor.Contracts
         List<ResourceRes> GetAllResources();
         List<SprintEnt> GetAllSprints();
         List<TaskEnt> GetAllTasks();
+        List<TaskEnt> GetAllTasksInProject(int projectId);
     }
 }

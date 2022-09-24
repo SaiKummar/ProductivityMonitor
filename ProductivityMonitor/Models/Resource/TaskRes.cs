@@ -9,11 +9,11 @@
         public int TaskReferenceTaskId { get; set; }
         public string TaskCategory { get; set; }
         public string TaskDescription { get; set; }
-        public int TaskCreator { get; set; }
+        public string TaskCreator { get; set; }
         public Decimal NumberOfHoursRequired { get; set; }
         public DateTime ExpirationDate { get; set; }
         public DateTime CompletionDate { get; set; }
-        public int TaskSupervisor { get; set; }
+        public string TaskSupervisor { get; set; }
         public string TaskRemarks { get; set; }
         public string TaskStatus { get; set; }
     }
