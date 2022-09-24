@@ -15,7 +15,7 @@ namespace ProductivityMonitor.Utilities
             _configuration = configuration;
         }
 
-        public string GenerateToken(string username)
+        public string GenerateToken(string username,IList<string> roleNames)
         {
             // 1. Create Security Token Handler
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -23,14 +23,20 @@ namespace ProductivityMonitor.Utilities
             // 2. Create Private Key to Encrypted
             var tokenKey = Encoding.ASCII.GetBytes(_configuration["JWT:Key"]);
 
+            //add name and roles to claims list
+            List<Claim> claims = new List<Claim>();
+            //add name claim
+            claims.Add(new Claim(ClaimTypes.Name, username));
+            //add roles claim
+            foreach (var name in roleNames)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, name));
+            }
+
             //3. Create JETdescriptor
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new ClaimsIdentity(
-                    new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, username)
-                    }),
+                Subject = new ClaimsIdentity(claims),
 
                 Expires = DateTime.UtcNow.AddHours(1),
 

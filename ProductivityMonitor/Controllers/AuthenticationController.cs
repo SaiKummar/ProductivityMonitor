@@ -26,6 +26,7 @@ namespace ProductivityMonitor.Controllers
             this.jwtTokenManager = jwtTokenManager;
         }
 
+        //register new user
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]RegisterModel registerModel)
         {
@@ -60,14 +61,16 @@ namespace ProductivityMonitor.Controllers
             
         }
 
+        //authenticate user and return jwt token
         [HttpGet("login")]
         public async Task<IActionResult> Login([FromQuery]LoginModel loginModel)
         {
             var userExists = await userManager.FindByEmailAsync(loginModel.Email);
             if (userExists != null && await userManager.CheckPasswordAsync(userExists, loginModel.Password))
             {
+                IList<string> roles = await userManager.GetRolesAsync(userExists);
                 //generate token
-                var token = jwtTokenManager.GenerateToken(userExists.UserName);
+                var token = jwtTokenManager.GenerateToken(userExists.UserName, roles);
                 return Ok(token);
             }
             else

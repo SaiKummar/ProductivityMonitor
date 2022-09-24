@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductivityMonitor.Contracts;
 using ProductivityMonitor.Models.Input;
@@ -6,7 +7,7 @@ using ProductivityMonitor.Models.Resource;
 
 namespace ProductivityMonitor.Controllers
 {
-    //[Authorize]
+    [Authorize(Roles="Manager")]
     [Route("api/[controller]")]
     [ApiController]
     public class ManagerController : ControllerBase

@@ -2,6 +2,6 @@
 {
     public interface IJwtTokenManager
     {
-        string GenerateToken(string username);
+        string GenerateToken(string username,IList<string> roles);
     }
 }
