@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductivityMonitor.Contracts;
 using ProductivityMonitor.Models;
 using ProductivityMonitor.Models.Input;
+using ProductivityMonitor.Models.Resource;
 using ProductivityMonitor.Utilities;
 
 namespace ProductivityMonitor.Controllers
@@ -71,7 +72,11 @@ namespace ProductivityMonitor.Controllers
                 IList<string> roles = await userManager.GetRolesAsync(userExists);
                 //generate token
                 var token = jwtTokenManager.GenerateToken(userExists.UserName, roles);
-                return Ok(token);
+                TokenRes tokenRes = new TokenRes()
+                {
+                    Token = token
+                };
+                return Ok(tokenRes);
             }
             else
             {

@@ -15,6 +15,11 @@ namespace ProductivityMonitor.Repository
             this.dao = dao;
         }
 
+        public bool AssignUserToSprintTask(SprintTaskModel sprintTaskData)
+        {
+            return dao.AssignUserToSprintTask(sprintTaskData);
+        }
+
         //create a new sprint
         public bool CreateSprint(SprintRes sprintData)
         {
@@ -25,6 +30,12 @@ namespace ProductivityMonitor.Repository
         public bool CreateSprintTask(SprintTaskModel sprintTaskData)
         {
             return dao.CreateSprintTask(sprintTaskData);
+        }
+
+        //get all modules in a project
+        public List<ModuleEnt> GetAllModulesInProject(int projectId)
+        {
+            return dao.GetAllModulesInProject(projectId);
         }
 
         //get all projects
@@ -51,9 +62,16 @@ namespace ProductivityMonitor.Repository
             return dao.GetAllTasks();
         }
 
+        //get all tasks in a project
         public List<TaskEnt> GetAllTasksInProject(int projectId)
         {
             return dao.GetAllTasksInProject(projectId);
+        }
+
+        //get all subtasks in a task
+        public List<TaskEnt> GetSubTasks(int taskId)
+        {
+            return dao.GetSubTasks(taskId);
         }
     }
 }

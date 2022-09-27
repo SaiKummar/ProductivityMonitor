@@ -127,6 +127,21 @@ namespace ProductivityMonitor.MappingProfiles
            .ForMember(dest =>
            dest.User_Id,
            opt => opt.MapFrom(src => src.UserId));
+
+            //mapping for Moduleent and module res
+            CreateMap<ModuleEnt, ModuleRes>()
+           .ForMember(dest =>
+           dest.ModuleId,
+           opt => opt.MapFrom(src => src.Modl_Id))
+           .ForMember(dest =>
+           dest.ModuleName,
+           opt => opt.MapFrom(src => src.Modl_Name))
+           .ForMember(dest =>
+           dest.ModuleDescription,
+           opt => opt.MapFrom(src => src.Modl_Desc))
+           .ForMember(dest =>
+           dest.ModuleProjectId,
+           opt => opt.MapFrom(src => src.Modl_Proj_Id));
         }
     }
 }

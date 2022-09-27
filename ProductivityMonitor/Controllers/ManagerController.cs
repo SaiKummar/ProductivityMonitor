@@ -26,6 +26,7 @@ namespace ProductivityMonitor.Controllers
             this.mapper = mapper;
         }
 
+        //--------------------project related endpoints------------------------
         // get all projects
         [HttpGet]
         [Route("v1/Projects")]
@@ -44,6 +45,15 @@ namespace ProductivityMonitor.Controllers
             return Ok(mapper.Map<List<TaskRes>>(repo.GetAllTasksInProject(projectId)));
         }
 
+        //get all modules under the project
+        [HttpGet]
+        [Route("v1/Projects/Modules")]
+        public ActionResult<List<ModuleRes>> GetAllModulesInProject([FromQuery] int projectId)
+        {
+            logger.LogInfo("get all modules in projects");
+            return Ok(mapper.Map<List<ModuleRes>>(repo.GetAllModulesInProject(projectId)));
+        }
+
         // get all tasks
         [HttpGet]
         [Route("v1/Tasks")]
@@ -51,6 +61,15 @@ namespace ProductivityMonitor.Controllers
         {
             logger.LogInfo("get all tasks");
             return Ok(mapper.Map<List<TaskRes>>(repo.GetAllTasks()));
+        }
+
+        //get all subtasks under a task
+        [HttpGet]
+        [Route("v1/Tasks/Subtasks")]
+        public ActionResult<List<TaskRes>> GetSubTasks([FromQuery]int taskId)
+        {
+            logger.LogInfo("get all subtasks");
+            return Ok(mapper.Map<List<TaskRes>>(repo.GetSubTasks(taskId)));
         }
 
         // get all resources
@@ -61,6 +80,8 @@ namespace ProductivityMonitor.Controllers
             logger.LogInfo("get all resources");
             return Ok(repo.GetAllResources());
         }
+
+        //--------------------sprint related endpoints------------------------
 
         //get all sprints
         [HttpGet]
@@ -98,6 +119,21 @@ namespace ProductivityMonitor.Controllers
             else
             {
                 return BadRequest("Could not create");
+            }
+        }
+
+        //assign tasks to resources
+        [HttpPatch]
+        [Route("v1/Sprints/Tasks/Resources")]
+        public ActionResult<SprintTaskModel> AssignUserToSprintTask([FromBody] SprintTaskModel sprintTaskData)
+        {
+            if (repo.AssignUserToSprintTask(sprintTaskData))
+            {
+                return Ok(sprintTaskData);
+            }
+            else
+            {
+                return BadRequest("Could not assign");
             }
         }
     }
