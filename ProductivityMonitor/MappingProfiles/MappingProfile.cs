@@ -142,6 +142,37 @@ namespace ProductivityMonitor.MappingProfiles
            .ForMember(dest =>
            dest.ModuleProjectId,
            opt => opt.MapFrom(src => src.Modl_Proj_Id));
+
+
+            //mapping for taskmodel and taskent
+            CreateMap<TaskModel, TaskEnt>()
+           .ForMember(dest =>
+           dest.Task_Name,
+           opt => opt.MapFrom(src => src.TaskName))
+           .ForMember(dest =>
+           dest.Task_Type,
+           opt => opt.MapFrom(src => src.TaskType))
+           .ForMember(dest =>
+           dest.Task_Ref_Task_Id,
+           opt => opt.MapFrom(src => src.TaskReferenceTaskId))
+           .ForMember(dest =>
+           dest.Task_Category,
+           opt => opt.MapFrom(src => src.TaskCategory))
+           .ForMember(dest =>
+           dest.Task_Desc,
+           opt => opt.MapFrom(src => src.TaskDescription))
+           .ForMember(dest =>
+           dest.Task_Creator,
+           opt => opt.MapFrom(src => src.TaskCreator))
+           .ForMember(dest =>
+           dest.Task_Noh_Reqd,
+           opt => opt.MapFrom(src => src.NumberOfHoursRequired))
+           .ForMember(dest =>
+           dest.Task_exp_datetime,
+           opt => opt.MapFrom(src => src.ExpirationDate))
+           .ForMember(dest =>
+           dest.Task_supervisor,
+           opt => opt.MapFrom(src => src.TaskSupervisor));
         }
     }
 }

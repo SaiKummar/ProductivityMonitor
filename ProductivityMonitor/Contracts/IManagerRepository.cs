@@ -9,6 +9,7 @@ namespace ProductivityMonitor.Contracts
         bool AssignUserToSprintTask(SprintTaskModel sprintTaskData);
         bool CreateSprint(SprintRes sprintData);
         bool CreateSprintTask(SprintTaskModel sprintTaskData);
+        bool CreateTask(TaskModel taskData);
         List<ModuleEnt> GetAllModulesInProject(int projectId);
         List<ProjectEnt> GetAllProjects();
         List<ResourceRes> GetAllResources();

@@ -6,7 +6,7 @@
         public string Task_Name { get; set; }
         public DateTime Task_Cdatetime { get; set; }
         public string Task_Type { get; set; }
-        public int Task_Ref_Task_Id { get; set; }
+        public int? Task_Ref_Task_Id { get; set; }
         public string Task_Category { get; set; }
         public string Task_Desc { get; set; }
         public string Task_Creator { get; set; }

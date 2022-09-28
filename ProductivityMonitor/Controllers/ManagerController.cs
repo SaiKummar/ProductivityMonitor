@@ -54,6 +54,8 @@ namespace ProductivityMonitor.Controllers
             return Ok(mapper.Map<List<ModuleRes>>(repo.GetAllModulesInProject(projectId)));
         }
 
+        //--------------------task related endpoints------------------------
+
         // get all tasks
         [HttpGet]
         [Route("v1/Tasks")]
@@ -70,6 +72,21 @@ namespace ProductivityMonitor.Controllers
         {
             logger.LogInfo("get all subtasks");
             return Ok(mapper.Map<List<TaskRes>>(repo.GetSubTasks(taskId)));
+        }
+
+        //Create new task
+        [HttpPost]
+        [Route("v1/Tasks")]
+        public ActionResult<TaskModel> CreateTask([FromBody] TaskModel taskData)
+        {
+            if (repo.CreateTask(taskData))
+            {
+                return Ok(taskData);
+            }
+            else
+            {
+                return BadRequest("Could not create");
+            }
         }
 
         // get all resources

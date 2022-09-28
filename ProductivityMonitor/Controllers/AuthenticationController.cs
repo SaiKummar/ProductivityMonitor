@@ -83,5 +83,35 @@ namespace ProductivityMonitor.Controllers
                 return Unauthorized();
             }
         }
+
+        //for manager login
+        [HttpGet("managerLogin")]
+        public async Task<IActionResult> ManagerLogin([FromQuery] LoginModel loginModel)
+        {
+            var userExists = await userManager.FindByEmailAsync(loginModel.Email);
+            if (userExists != null && await userManager.CheckPasswordAsync(userExists, loginModel.Password))
+            {
+                IList<string> roles = await userManager.GetRolesAsync(userExists);
+                //check if user has manager role
+                if (roles.Contains("Manager"))
+                {
+                    //generate token
+                    var token = jwtTokenManager.GenerateToken(userExists.UserName, roles);
+                    TokenRes tokenRes = new TokenRes()
+                    {
+                        Token = token
+                    };
+                    return Ok(tokenRes);
+                }
+                else
+                {
+                    return Unauthorized();
+                }    
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

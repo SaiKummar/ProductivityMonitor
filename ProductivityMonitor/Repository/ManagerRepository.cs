@@ -32,6 +32,12 @@ namespace ProductivityMonitor.Repository
             return dao.CreateSprintTask(sprintTaskData);
         }
 
+        //create new task
+        public bool CreateTask(TaskModel taskData)
+        {
+            return dao.CreateTask(taskData);
+        }
+
         //get all modules in a project
         public List<ModuleEnt> GetAllModulesInProject(int projectId)
         {

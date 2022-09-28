@@ -129,5 +129,22 @@ namespace ProductivityMonitor.Dao
             int numOfRecordsAffected = connection.Execute(qry, newData);
             return numOfRecordsAffected > 0;
         }
+
+        //create new task
+        public bool CreateTask(TaskModel taskData)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            var newData = mapper.Map<TaskEnt>(taskData);
+            if(newData.Task_Ref_Task_Id == 0)
+            {
+                newData.Task_Ref_Task_Id = null;
+            }
+            string qry = "insert into tasks(task_name,task_cdatetime,task_type,task_ref_task_id,task_category,task_desc," +
+                "task_creator,task_noh_reqd,task_exp_datetime,task_supervisor,task_status)" +
+                "values(@Task_Name, now(), @Task_Type, @Task_Ref_Task_Id, @Task_Category, @Task_Desc," +
+                "@Task_Creator,@Task_Noh_Reqd,@Task_exp_datetime,@Task_supervisor,'todo');";
+            int numOfRecordsAffected = connection.Execute(qry, newData);
+            return numOfRecordsAffected > 0;
+        }
     }
 }
