@@ -68,6 +68,12 @@ namespace ProductivityMonitor.Repository
             return dao.GetAllTasks();
         }
 
+        //get all tasks in a module
+        public List<TaskEnt> GetAllTasksInModule(int moduleId)
+        {
+            return dao.GetAllTasksInModule(moduleId);
+        }
+
         //get all tasks in a project
         public List<TaskEnt> GetAllTasksInProject(int projectId)
         {

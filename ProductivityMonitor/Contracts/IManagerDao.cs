@@ -15,6 +15,7 @@ namespace ProductivityMonitor.Contracts
         List<ResourceRes> GetAllResources();
         List<SprintEnt> GetAllSprints();
         List<TaskEnt> GetAllTasks();
+        List<TaskEnt> GetAllTasksInModule(int moduleId);
         List<TaskEnt> GetAllTasksInProject(int projectId);
         List<TaskEnt> GetSubTasks(int taskId);
     }

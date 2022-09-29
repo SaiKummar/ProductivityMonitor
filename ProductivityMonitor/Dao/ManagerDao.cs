@@ -59,7 +59,7 @@ namespace ProductivityMonitor.Dao
             return tasks.ToList();
         }
 
-        //get all tas from tasks table
+        //get all sprints from sprints table
         public List<SprintEnt> GetAllSprints()
         {
             using NpgsqlConnection connection = new NpgsqlConnection(cs);
@@ -86,6 +86,17 @@ namespace ProductivityMonitor.Dao
             string qry = "select t.* from tasks t inner join projecttasks pt on t.task_id = pt.task_id " +
                 "inner join projectmodules pm on pt.task_modl_id = pm.modl_id where pm.modl_proj_id = @pid;";
             var tasks = connection.Query<TaskEnt>(qry, new {pid = projectId});
+            //convert Ienumerable to list
+            return tasks.ToList();
+        }
+
+        //get all tasks in a module
+        public List<TaskEnt> GetAllTasksInModule(int moduleId)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "select t.* from projecttasks pt inner join tasks t" +
+                " on pt.task_id = t.task_id where pt.task_modl_id = @mid";
+            var tasks = connection.Query<TaskEnt>(qry, new { mid = moduleId });
             //convert Ienumerable to list
             return tasks.ToList();
         }

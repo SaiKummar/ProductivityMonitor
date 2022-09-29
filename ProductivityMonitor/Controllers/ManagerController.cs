@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using ProductivityMonitor.Contracts;
 using ProductivityMonitor.Models.Input;
 using ProductivityMonitor.Models.Resource;
-using System.Reflection.Metadata.Ecma335;
 
 namespace ProductivityMonitor.Controllers
 {
@@ -43,6 +42,15 @@ namespace ProductivityMonitor.Controllers
         {
             logger.LogInfo("get all tasks in projects");
             return Ok(mapper.Map<List<TaskRes>>(repo.GetAllTasksInProject(projectId)));
+        }
+
+        //get all tasks under the module
+        [HttpGet]
+        [Route("v1/Projects/Modules/Tasks")]
+        public ActionResult<List<TaskRes>> GetAllTasksInModule([FromQuery] int moduleId)
+        {
+            logger.LogInfo("get all tasks in module");
+            return Ok(mapper.Map<List<TaskRes>>(repo.GetAllTasksInModule(moduleId)));
         }
 
         //get all modules under the project
