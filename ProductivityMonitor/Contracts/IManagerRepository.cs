@@ -13,10 +13,14 @@ namespace ProductivityMonitor.Contracts
         List<ModuleEnt> GetAllModulesInProject(int projectId);
         List<ProjectEnt> GetAllProjects();
         List<ResourceRes> GetAllResources();
+        List<SprintUsersRes> GetAllResourcesInSprint(int sprintId);
         List<SprintEnt> GetAllSprints();
+        List<SprintEnt> GetAllSprintsInModule(int modId);
+        List<SprintEnt> GetAllSprintsInProject(int projId);
         List<TaskEnt> GetAllTasks();
         List<TaskEnt> GetAllTasksInModule(int moduleId);
         List<TaskEnt> GetAllTasksInProject(int projectId);
+        List<SprintTaskGetEnt> GetAllTasksInSprint(int sprintId);
         List<TaskEnt> GetSubTasks(int taskId);
     }
 }

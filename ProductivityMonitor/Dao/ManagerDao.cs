@@ -29,7 +29,7 @@ namespace ProductivityMonitor.Dao
             this.mapper = mapper;
         }
 
-        //get all proejcts from projects table
+        //get all projects from projects table
         public List<ProjectEnt> GetAllProjects()
         {
             using NpgsqlConnection connection = new NpgsqlConnection(cs);
@@ -42,11 +42,13 @@ namespace ProductivityMonitor.Dao
         //get all resources from cutsomusers identity table
         public List<ResourceRes> GetAllResources()
         {
-            //get all users from identity tables using usermanager
-            List<CustomUser> users = userManager.Users.ToList();
-
-            //map the identity user table to resource model and return the result
-            return mapper.Map<List<ResourceRes>>(users);
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "SELECT u.\"Id\", u.\"User_Empl_Id\" as UserEmployeeId, u.\"UserName\", u.\"Email\", u.\"PhoneNumber\"," +
+                " u.\"User_Status\" as UserStatus, r.\"Name\" as RoleName FROM public.\"AspNetUserRoles\" ur inner join" +
+                " public.\"AspNetUsers\" u on ur.\"UserId\" = u.\"Id\" inner join public.\"AspNetRoles\" r on ur.\"RoleId\" = r.\"Id\"";
+            var resources = connection.Query<ResourceRes>(qry);
+            //convert Ienumerable to list
+            return resources.ToList();
         }
 
         //get all tasks from tasks table
@@ -69,12 +71,32 @@ namespace ProductivityMonitor.Dao
             return sprints.ToList();
         }
 
+        //get all sprints in project
+        public List<SprintEnt> GetAllSprintsInProject(int projId)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "select s.* from ProjectModules pm inner join sprints s on pm.modl_id = s.sprn_modl_id where pm.modl_proj_id = @pid";
+            var sprints = connection.Query<SprintEnt>(qry, new {pid = projId});
+            //convert Ienumerable to list
+            return sprints.ToList();
+        }
+
+        //get all sprints in module
+        public List<SprintEnt> GetAllSprintsInModule(int modId)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "select s.*,u.\"UserName\" from sprints s inner join public.\"AspNetUsers\" u on s.sprn_master = u.\"Id\" where s.sprn_modl_id = @mid";
+            var sprints = connection.Query<SprintEnt>(qry, new { mid = modId });
+            //convert Ienumerable to list
+            return sprints.ToList();
+        }
+
         //create new sprint
         public bool CreateSprint(SprintRes sprintData)
         {
             using NpgsqlConnection connection = new NpgsqlConnection(cs);
             var newData = mapper.Map<SprintEnt>(sprintData);
-            string qry = "insert into sprints values(@Sprn_id,@Sprn_modl_id,@Sprn_master,@Sprn_stdate,@Sprn_stdate);";
+            string qry = "insert into sprints(sprn_modl_id, sprn_master, sprn_stdate, sprn_enddate) values(@Sprn_modl_id,@Sprn_master,@Sprn_stdate,@Sprn_stdate);";
             int numOfRecordsAffected = connection.Execute(qry, newData);
             return numOfRecordsAffected > 0;
         }
@@ -156,6 +178,26 @@ namespace ProductivityMonitor.Dao
                 "@Task_Creator,@Task_Noh_Reqd,@Task_exp_datetime,@Task_supervisor,'todo');";
             int numOfRecordsAffected = connection.Execute(qry, newData);
             return numOfRecordsAffected > 0;
+        }
+
+        //get sprintwise resources
+        public List<SprintUsersRes> GetAllResourcesInSprint(int sprintId)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "select u.\"UserName\",r.\"Name\" as RoleName from sprintresources sr inner join public.\"AspNetUsers\" u on sr.user_id = u.\"Id\" inner join public.\"AspNetRoles\" r on sr.sprs_role_id = r.\"Id\" where sprn_id = @spid";
+            var resources = connection.Query<SprintUsersRes>(qry, new {spid = sprintId});
+            //convert Ienumerable to list
+            return resources.ToList();
+        }
+
+        //get tasks in sprint
+        public List<SprintTaskGetEnt> GetAllTasksInSprint(int sprintId)
+        {
+            using NpgsqlConnection connection = new NpgsqlConnection(cs);
+            string qry = "select t.*,u.\"UserName\" from sprinttasks st inner join tasks t on st.task_id = t.task_id inner join public.\"AspNetUsers\" u on st.user_id = u.\"Id\" where st.sprn_id = @spid";
+            var tasks = connection.Query<SprintTaskGetEnt>(qry, new { spid = sprintId });
+            //convert Ienumerable to list
+            return tasks.ToList();
         }
     }
 }

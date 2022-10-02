@@ -10,6 +10,7 @@ namespace ProductivityMonitor.Repository
         //reference to store a dao object
         private IManagerDao dao;
 
+        //constructor
         public ManagerRepository(IManagerDao dao)
         {
             this.dao = dao;
@@ -56,10 +57,28 @@ namespace ProductivityMonitor.Repository
             return dao.GetAllResources();
         }
 
-        //get all spll sprints
+        //get all resources in sprint
+        public List<SprintUsersRes> GetAllResourcesInSprint(int sprintId)
+        {
+            return dao.GetAllResourcesInSprint(sprintId);
+        }
+
+        //get all sprints
         public List<SprintEnt> GetAllSprints()
         {
             return dao.GetAllSprints();
+        }
+
+        //get all sprints in module
+        public List<SprintEnt> GetAllSprintsInModule(int modId)
+        {
+            return dao.GetAllSprintsInModule(modId);
+        }
+
+        //get all sprints in project
+        public List<SprintEnt> GetAllSprintsInProject(int projId)
+        {
+            return dao.GetAllSprintsInProject(projId);
         }
 
         //get all tasks
@@ -78,6 +97,12 @@ namespace ProductivityMonitor.Repository
         public List<TaskEnt> GetAllTasksInProject(int projectId)
         {
             return dao.GetAllTasksInProject(projectId);
+        }
+
+        //get all tasks in sprint
+        public List<SprintTaskGetEnt> GetAllTasksInSprint(int sprintId)
+        {
+            return dao.GetAllTasksInSprint(sprintId);
         }
 
         //get all subtasks in a task

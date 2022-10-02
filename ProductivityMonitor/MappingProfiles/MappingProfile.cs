@@ -34,24 +34,6 @@ namespace ProductivityMonitor.MappingProfiles
             dest.ProjectLastUpdateDate,
             opt => opt.MapFrom(src => src.Proj_Ludate));
 
-            //mapping for customuser and resourceent models
-            CreateMap<CustomUser, ResourceRes>()
-            .ForMember(dest =>
-            dest.UserEmployeeId,
-            opt => opt.MapFrom(src => src.User_Empl_Id))
-            .ForMember(dest =>
-            dest.UserName,
-            opt => opt.MapFrom(src => src.UserName))
-            .ForMember(dest =>
-            dest.Email,
-            opt => opt.MapFrom(src => src.Email))
-            .ForMember(dest =>
-            dest.PhoneNumber,
-            opt => opt.MapFrom(src => src.PhoneNumber))
-            .ForMember(dest =>
-            dest.UserStatus,
-            opt => opt.MapFrom(src => src.User_Status));
-
             //mapping for taskent and taskres
             CreateMap<TaskEnt, TaskRes>()
            .ForMember(dest =>
@@ -114,6 +96,9 @@ namespace ProductivityMonitor.MappingProfiles
            .ForMember(dest =>
            dest.SprintEndDate,
            opt => opt.MapFrom(src => src.Sprn_enddate))
+           .ForMember(dest =>
+           dest.UserName,
+           opt => opt.MapFrom(src => src.UserName))
            .ReverseMap();
 
             //mapping for sprinttaskent and sprinttask input model

@@ -7,5 +7,6 @@
         public string Sprn_master { get; set; }
         public DateTime Sprn_stdate { get; set; }
         public DateTime Sprn_enddate { get; set; }
+        public string UserName { get; set; }
     }
 }

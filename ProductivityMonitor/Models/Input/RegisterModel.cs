@@ -6,6 +6,7 @@ namespace ProductivityMonitor.Models.Input
     {
         [Required]
         public string UserName { get; set; }
+
         [Required(ErrorMessage = "pls provide the email")]
         [EmailAddress]
         public string Email { get; set; }

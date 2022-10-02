@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductivityMonitor.Contracts;
+using ProductivityMonitor.Models.Entity;
 using ProductivityMonitor.Models.Input;
 using ProductivityMonitor.Models.Resource;
 
@@ -117,6 +118,24 @@ namespace ProductivityMonitor.Controllers
             return Ok(mapper.Map<List<SprintRes>>(repo.GetAllSprints()));
         }
 
+        //get all sprints in project
+        [HttpGet]
+        [Route("v1/Projects/Sprints")]
+        public ActionResult<List<SprintRes>> GetAllSprintsInProject([FromQuery] int projId)
+        {
+            logger.LogInfo("get all sprints in project");
+            return Ok(mapper.Map<List<SprintRes>>(repo.GetAllSprintsInProject(projId)));
+        }
+
+        //get all sprints in module
+        [HttpGet]
+        [Route("v1/Projects/Modules/Sprints")]
+        public ActionResult<List<SprintRes>> GetAllSprintsInModule([FromQuery] int modId)
+        {
+            logger.LogInfo("get all modules in project");
+            return Ok(mapper.Map<List<SprintRes>>(repo.GetAllSprintsInModule(modId)));
+        }
+
         //create new sprint
         [HttpPost]
         [Route("v1/Sprints")]
@@ -130,6 +149,30 @@ namespace ProductivityMonitor.Controllers
             {
                 return BadRequest("Could not create");
             }
+        }
+
+        //update sprint task user
+        [HttpPatch]
+        [Route("v1/Sprints/Tasks/Resources")]
+        public ActionResult<SprintTaskModel> AssignUserToSprintTask([FromBody] SprintTaskModel sprintTaskData)
+        {
+            if (repo.AssignUserToSprintTask(sprintTaskData))
+            {
+                return Ok(sprintTaskData);
+            }
+            else
+            {
+                return BadRequest("Could not assign");
+            }
+        }
+
+        // get all resources in a sprint
+        [HttpGet]
+        [Route("v1/Sprint/Resources")]
+        public ActionResult<List<ResourceRes>> GetAllResourcesInSprint([FromQuery] int sprintId)
+        {
+            logger.LogInfo("get all resources in sprint");
+            return Ok(repo.GetAllResourcesInSprint(sprintId));
         }
 
         //create task under sprint
@@ -147,19 +190,13 @@ namespace ProductivityMonitor.Controllers
             }
         }
 
-        //assign tasks to resources
-        [HttpPatch]
-        [Route("v1/Sprints/Tasks/Resources")]
-        public ActionResult<SprintTaskModel> AssignUserToSprintTask([FromBody] SprintTaskModel sprintTaskData)
+        // get all tasks in a sprint
+        [HttpGet]
+        [Route("v1/Sprint/Tasks")]
+        public ActionResult<List<SprintTaskGetEnt>> GetAllTasksInSprint([FromQuery] int sprintId)
         {
-            if (repo.AssignUserToSprintTask(sprintTaskData))
-            {
-                return Ok(sprintTaskData);
-            }
-            else
-            {
-                return BadRequest("Could not assign");
-            }
+            logger.LogInfo("get all tasks in sprint");
+            return Ok(repo.GetAllTasksInSprint(sprintId));
         }
     }
 }
